@@ -52,7 +52,7 @@ def get_xml_file_by_id(id:int)->dict:
     return values
 
 
-@router.post('/xml_file')
+@router.post('/')
 def receive_xml_file(xml_data:str)->str:
     if not validate_xml_str(xml_data):
         raise HTTPException(status_code=400, detail='invalid xml data')
