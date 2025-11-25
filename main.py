@@ -8,8 +8,25 @@ app = FastAPI()
 engine = create_engine(db_url)
 SessionLocal = sessionmaker(bind=engine, autoflush=False)
 
+@app.get('/xml_file')
+def get_files():
+    session = SessionLocal()
+
+    res = session.execute(text(
+        """SELECT id, xml_data from xmlfiles
+        """
+    ))
+
+    values = {}
+    for value in res.all():
+        values[value[0]] = value[1]
+    session.close()
+
+    return values
+
+
 @app.post('/xml_file')
-async def xml_receive(xml_data:str):
+def xml_receive(xml_data:str):
     # Do something with xml_str, e.g., store in DB
     print(xml_data)
 
@@ -26,5 +43,5 @@ async def xml_receive(xml_data:str):
 
 @app.get('/')
 def root():
-    return {'hello': 'world'}
+    return "XML placeholder"
 
